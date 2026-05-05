@@ -1,0 +1,200 @@
+<section id="passear">
+      <h2>Passear</h2>
+
+      <p>A categoria “Passear” reúne locais indicados para descobrir a região com calma, incluindo praias, parques, miradouros, percursos fáceis e espaços históricos. Esta organização foi pensada para facilitar a escolha de locais adequados a diferentes perfis de utilizador, incluindo pessoas com menor mobilidade.</p>
+
+      <div class="interesses-grid" id="lista-pontos">
+        <!-- Os cards vão ser inseridos aqui pelo JavaScript -->
+
+       <!-- Card: Praias -->
+        <article class="interesse-card">
+          <h3>Praias</h3>
+          <span class="tag">Acessível</span>
+          <span class="tag">Percurso fácil</span>
+
+          <ul>
+            <li>Costa da Caparica</li>
+            <li>Fonte da Telha</li>
+            <li>Praias da Arrábida</li>
+          </ul>
+
+          <p><strong>Como chegar:</strong> consultar opções de autocarro, comboio ou ligação rodoviária na secção “Transportes”.</p>
+        </article>
+
+        <!-- Card: Parques e jardins -->
+        <article class="interesse-card">
+          <h3>Parques e jardins</h3>
+          <span class="tag">Acessível</span>
+          <span class="tag">Zona de descanso</span>
+
+          <ul>
+            <li>Parque da Paz</li>
+            <li>Jardim do Rio</li>
+            <li>Quinta da Fidalga</li>
+          </ul>
+
+          <p><strong>Como chegar:</strong> consultar transportes públicos próximos na secção “Transportes”.</p>
+        </article>
+
+        <!-- Card: Miradouros -->
+        <article class="interesse-card">
+          <h3>Miradouros</h3>
+          <span class="tag">Vista panorâmica</span>
+
+          <ul>
+            <li>Santuário Nacional de Cristo Rei</li>
+            <li>Miradouros ribeirinhos de Almada</li>
+            <li>Zona histórica de Cacilhas</li>
+          </ul>
+
+          <p><strong>Como chegar:</strong> verificar acessos e transportes antes da visita, especialmente em zonas elevadas.</p>
+        </article>
+
+        <!-- Card: Caminhadas -->
+        <article class="interesse-card">
+          <h3>Caminhadas / percursos fáceis</h3>
+          <span class="tag">Percurso fácil</span>
+
+          <ul>
+            <li>Frente ribeirinha do Seixal</li>
+            <li>Percursos junto ao Tejo</li>
+            <li>Passeios urbanos acessíveis</li>
+          </ul>
+
+          <p><strong>Como chegar:</strong> escolher percursos próximos de paragens de transporte público.</p>
+        </article>
+
+        <!-- Card: Locais históricos -->
+        <article class="interesse-card">
+          <h3>Locais históricos</h3>
+          <span class="tag">Histórico</span>
+
+          <ul>
+            <li>Castelo de Almada</li>
+            <li>Convento dos Capuchos</li>
+            <li>Palácio da Cerca</li>
+          </ul>
+
+          <p><strong>Como chegar:</strong> confirmar acessibilidade e transportes disponíveis antes da visita.</p>
+        </article>
+
+      </div>
+          </section>
+
+<!-- Secção orientada à tarefa “Comer” -->
+    <section id="comer">
+      <h2>Comer</h2>
+
+      <p>A gastronomia da Margem Sul reflete a proximidade ao rio e ao mar, com destaque para peixe fresco, marisco, cozinha tradicional portuguesa e espaços de convívio como cafés, bares e esplanadas.</p>
+
+      <div class="interesses-grid">
+
+        <!-- Card: Restaurantes de peixe -->
+        <article class="interesse-card">
+          <h3>Restaurantes de peixe</h3>
+          <span class="tag">Peixe fresco</span>
+
+          <ul>
+            <li>Cacilhas</li>
+            <li>Sesimbra</li>
+            <li>Setúbal</li>
+          </ul>
+        </article>
+
+        <!-- Card: Restaurantes tradicionais -->
+        <article class="interesse-card">
+          <h3>Restaurantes tradicionais</h3>
+          <span class="tag">Comida portuguesa</span>
+
+          <ul>
+            <li>Cozinha portuguesa</li>
+            <li>Pratos regionais</li>
+            <li>Espaços familiares</li>
+          </ul>
+        </article>
+
+        <!-- Card: Cafés, esplanadas e bares -->
+        <article class="interesse-card">
+          <h3>Cafés, esplanadas e bares</h3>
+          <span class="tag">Lazer</span>
+
+          <ul>
+            <li>Frentes ribeirinhas</li>
+            <li>Zonas históricas</li>
+            <li>Áreas junto à praia</li>
+          </ul>
+        </article>
+
+      </div>
+    </section>
+
+      <!-- Secção cultural -->
+        <section id="cultura">
+          <h2>Cultura</h2>
+
+          <p>A Margem Sul possui uma vida cultural diversificada, marcada por teatro, música, festas populares, museus, eventos municipais, coletividades e iniciativas locais. Esta oferta permite ao visitante conhecer melhor a identidade da região.</p>
+
+          <div class="interesses-grid">
+
+            <!-- Card: Teatro e revista -->
+            <article class="interesse-card">
+              <h3>Teatro e revista</h3>
+              <span class="tag">Cultura local</span>
+
+              <ul>
+                <li>Teatros municipais</li>
+                <li>Espetáculos de revista</li>
+                <li>Programação local</li>
+              </ul>
+            </article>
+
+            <!-- Card: Fado e música ao vivo -->
+            <article class="interesse-card">
+              <h3>Fado e música ao vivo</h3>
+              <span class="tag">Música ao vivo</span>
+
+              <ul>
+                <li>Casas de fado</li>
+                <li>Eventos musicais</li>
+                <li>Espaços culturais</li>
+              </ul>
+            </article>
+
+            <!-- Card: Eventos locais -->
+            <article class="interesse-card">
+              <h3>Eventos locais</h3>
+              <span class="tag">Eventos</span>
+
+              <ul>
+                <li>Festival de Almada</li>
+                <li>O Sol da Caparica</li>
+                <li>SeixalJazz</li>
+              </ul>
+            </article>
+
+            <!-- Card: Museus -->
+            <article class="interesse-card">
+              <h3>Museus</h3>
+              <span class="tag">História</span>
+
+              <ul>
+                <li>Museus municipais</li>
+                <li>Centros culturais</li>
+                <li>Espaços de património</li>
+              </ul>
+            </article>
+
+            <!-- Card: Festas e tradições -->
+            <article class="interesse-card">
+              <h3>Festas e tradições</h3>
+              <span class="tag">Tradição</span>
+
+              <ul>
+                <li>Festas populares</li>
+                <li>Eventos religiosos</li>
+                <li>Iniciativas comunitárias</li>
+              </ul>
+            </article>
+
+          </div>
+        </section>
