@@ -1,7 +1,24 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from db import query_db
-from ai import gerar_guia
+from ai import gerar_guia as _gemini_guia, classificar_contacto as _gemini_contacto
+import op_ai as _op_ai
+
+
+def gerar_guia(destino, tipo="destino"):
+    """Try Gemini first; fall back to OpenRouter if Gemini fails."""
+    try:
+        return _gemini_guia(destino, tipo)
+    except Exception:
+        return _op_ai.gerar_guia(destino, tipo)
+
+
+def classificar_contacto(tipo_pedido, mensagem):
+    """Try Gemini first; fall back to OpenRouter if Gemini fails."""
+    try:
+        return _gemini_contacto(tipo_pedido, mensagem)
+    except Exception:
+        return _op_ai.classificar_contacto(tipo_pedido, mensagem)
 
 app = Flask(__name__)
 CORS(app)
@@ -68,6 +85,36 @@ def guia_ai():
     try:
         texto = gerar_guia(destino, tipo)
         return jsonify({"destino": destino, "guia": texto})
+    except Exception as e:
+        return jsonify({"erro": str(e)}), 500
+
+
+@app.route("/api/ai/contacto", methods=["POST"])
+def contacto_ai():
+    """Classifica pedido de contacto e gera resposta automática com IA."""
+    dados = request.get_json()
+
+    if not dados or "mensagem" not in dados:
+        return jsonify({"erro": "Campo 'mensagem' é obrigatório."}), 400
+
+    tipo_pedido = dados.get("tipo_pedido", "geral")
+    mensagem = dados["mensagem"]
+
+    try:
+        raw = classificar_contacto(tipo_pedido, mensagem)
+
+        # Strip ```json ... ``` or ``` ... ``` fences the model sometimes adds
+        import re, json as _json
+        cleaned = re.sub(r"```(?:json)?\s*", "", raw).strip().rstrip("`").strip()
+
+        # Parse JSON and return only the 'resposta' field
+        try:
+            parsed = _json.loads(cleaned)
+            resposta = parsed.get("resposta", cleaned)
+        except Exception:
+            resposta = cleaned
+
+        return jsonify({"resultado": resposta})
     except Exception as e:
         return jsonify({"erro": str(e)}), 500
 

@@ -4,18 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Locais Históricos - Almada</title>
+    <title>Parques e Jardins - Almada</title>
 
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="pagina-secundaria">
 
 <header>
-    <h1>Locais Históricos de Almada</h1>
-    <p>Descubra espaços com valor histórico, religioso e cultural ligados à identidade de Almada.</p>
+    <h1>Parques e Jardins de Almada</h1>
+    <p>Descubra espaços verdes, zonas de descanso e locais adequados para passeios tranquilos.</p>
 
-    <a href="index.html" class="voltar-home" style="color:white; text-decoration:none;">
+    <a href="../../index.html" class="voltar-home" style="color:white; text-decoration:none;">
         ← Voltar à página principal
     </a>
 </header>
@@ -26,30 +26,31 @@
         <h2>Filtros</h2>
 
         <div class="filtros-praias">
-            <button id="filtro-historico-acessivel" type="button">
+            <button id="filtro-parque-acessivel" type="button">
                 Só acessíveis
             </button>
 
-            <button id="filtro-historico-transportes" type="button">
-                Com transportes
+            <button id="filtro-parque-familias" type="button">
+                Ideal para famílias
             </button>
 
-            <button id="limpar-filtros-historicos" type="button">
+            <button id="limpar-filtros-parques" type="button">
                 Limpar filtros
             </button>
         </div>
 
         <input
                 type="text"
-                id="pesquisa-historico"
-                placeholder="Pesquisar local histórico..."
+                id="pesquisa-parque"
+                placeholder="Pesquisar parque ou jardim..."
         >
     </section>
 
     <section>
-        <h2>Lista de locais históricos</h2>
+        <h2>Lista de parques e jardins</h2>
 
-        <div class="interesses-grid" id="lista-historicos">
+        <div class="interesses-grid" id="lista-parques">
+            <!-- Os cards vão ser preenchidos via JavaScript -->
         </div>
     </section>
 
@@ -75,7 +76,7 @@
     </div>
 </div>
 
-<script src="script.js"></script>
+<script src="../../script.js"></script>
 
 </body>
 </html>

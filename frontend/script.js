@@ -1,7 +1,16 @@
+const API = "http://127.0.0.1:5001";
+
+// Base path para navegação entre páginas (deteta profundidade automaticamente)
+const PATH_PREFIX = (() => {
+    const path = window.location.pathname;
+    if (path.includes("/pages/lista/") || path.includes("/pages/detalhe/")) return "../../";
+    return "";
+})();
+const DETALHE = PATH_PREFIX + "pages/detalhe/";
+const LISTA = PATH_PREFIX + "pages/lista/";
+
 // Executa o código apenas depois de todo o HTML estar carregado
 document.addEventListener("DOMContentLoaded", function () {
-
-    /* ================= FORMULÁRIO DE CONTACTO ================= */
 
     // Seleção dos campos do formulário
     const form = document.getElementById("form-contacto");
@@ -155,7 +164,11 @@ document.addEventListener("DOMContentLoaded", function () {
             const mensagemValida = validarMensagem();
 
             if (nomeValido && emailValido && tipoPedidoValido && mensagemValida) {
-                mensagemSucesso.textContent = "Pedido enviado com sucesso. Será preparado um resumo com base na informação indicada.";
+                mensagemSucesso.textContent = "Pedido enviado com sucesso. A gerar resposta automática...";
+
+                // Guardar valores antes do reset
+                const tipoPedido = tipoPedidoInput.value;
+                const mensagemTexto = mensagemInput.value;
 
                 form.reset();
 
@@ -168,6 +181,48 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 atualizarContador();
+
+                // Chamar IA para classificar e responder
+                const aiSection = document.getElementById("ai-contacto-section");
+                const aiLoading = document.getElementById("ai-contacto-loading");
+                const aiResultado = document.getElementById("ai-contacto-resultado");
+
+                if (aiSection) {
+                    aiSection.style.display = "block";
+                    aiLoading.style.display = "block";
+                    aiResultado.innerHTML = "";
+
+                    fetch(API + "/api/ai/contacto", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ tipo_pedido: tipoPedido, mensagem: mensagemTexto })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        aiLoading.style.display = "none";
+                        if (data.erro) {
+                            aiResultado.innerHTML = `<p class="erro">Não foi possível gerar resposta automática.</p>`;
+                        } else {
+                            let texto = data.resultado || "";
+                            // Strip ```json ... ``` or ``` ... ``` wrappers
+                            texto = texto.replace(/```json\s*/gi, "").replace(/```\s*/g, "").trim();
+                            // Try to parse as JSON and extract the 'resposta' field
+                            try {
+                                const parsed = JSON.parse(texto);
+                                texto = parsed.resposta || texto;
+                            } catch (e) { /* not JSON, use as-is */ }
+                            // Remove emojis
+                            texto = texto.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, "").trim();
+                            aiResultado.innerHTML = `<div class="ai-resposta">${texto.replace(/\n/g, "<br>")}</div>`;
+                        }
+                        mensagemSucesso.textContent = "Pedido enviado com sucesso.";
+                    })
+                    .catch(() => {
+                        aiLoading.style.display = "none";
+                        aiResultado.innerHTML = `<p class="erro">Não foi possível gerar resposta automática.</p>`;
+                        mensagemSucesso.textContent = "Pedido enviado com sucesso.";
+                    });
+                }
             } else {
                 mensagemSucesso.textContent = "";
             }
@@ -431,7 +486,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     }
 
-    carregarSecao("http://127.0.0.1:5001/api/passear", "lista-passear");
+    carregarSecao(API + "/api/passear", "lista-passear");
 
 
 
@@ -465,7 +520,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (document.getElementById("lista-praias")) {
                 carregarPraias();
             } else {
-                carregarSecao("http://127.0.0.1:5001/api/passear", "lista-passear");
+                carregarSecao(API + "/api/passear", "lista-passear");
             }
         });
     }
@@ -547,7 +602,7 @@ document.addEventListener("DOMContentLoaded", function () {
     /* Praias */
 
     function carregarPraias() {
-        fetch("http://127.0.0.1:5001/api/praias")
+        fetch(API + "/api/praias")
             .then(function (res) {
                 return res.json();
             })
@@ -605,7 +660,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     card.style.cursor = "pointer";
 
                     card.addEventListener("click", function () {
-                        window.location.href = `praia.html?id=${praia.id}`;
+                        window.location.href = `${DETALHE}praia.html?id=${praia.id}`;
                     });
                     card.classList.add("interesse-card", "praia-card");
 
@@ -616,7 +671,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         .join("");
 
                     card.innerHTML = `
-                    <img src="${praia.imagem}" alt="Imagem de ${praia.nome}" class="card-img">
+                    <img src="${PATH_PREFIX}${praia.imagem}" alt="Imagem de ${praia.nome}" class="card-img">
                     <div class="acoes-card"> 
                         <button class="btn-detalhes">Ver detalhes</button> 
                     </div>
@@ -646,7 +701,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     
                     card.querySelector(".btn-detalhes").addEventListener("click", function (e) {
                         e.stopPropagation(); // impede duplo trigger do card
-                        window.location.href = `praia.html?id=${praia.id}`;
+                        window.location.href = `${DETALHE}praia.html?id=${praia.id}`;
                     });
 
                     container.appendChild(card);
@@ -671,7 +726,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const inputPesquisaParque = document.getElementById("pesquisa-parque");
 
     function carregarParques() {
-        fetch("http://127.0.0.1:5001/api/parques")
+        fetch(API + "/api/parques")
             .then(function(res) { return res.json(); })
             .then(function(data) {
                 const container = document.getElementById("lista-parques");
@@ -686,10 +741,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     const card = document.createElement("article");
                     card.classList.add("interesse-card");
                     card.style.cursor = "pointer";
-                    card.addEventListener("click", function() { window.location.href = "parque.html?id=" + parque.id; });
+                    card.addEventListener("click", function() { window.location.href = DETALHE + "parque.html?id=" + parque.id; });
                     const tagsHTML = (parque.ideal_para || []).map(t => `<span class="tag">${t}</span>`).join("");
                     card.innerHTML = `
-                        <img src="${parque.imagem}" alt="Imagem de ${parque.nome}" class="card-img">
+                        <img src="${PATH_PREFIX}${parque.imagem}" alt="Imagem de ${parque.nome}" class="card-img">
                         <div class="acoes-card"><button class="btn-detalhes">Ver detalhes</button></div>
                         <h3>${parque.nome}</h3>
                         ${parque.acessivel ? '<span class="tag">Acessível</span>' : '<span class="tag tag-alerta">Acesso difícil</span>'}
@@ -702,7 +757,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     `;
                     card.querySelector(".btn-detalhes").addEventListener("click", function(e) {
                         e.stopPropagation();
-                        window.location.href = "parque.html?id=" + parque.id;
+                        window.location.href = DETALHE + "parque.html?id=" + parque.id;
                     });
                     container.appendChild(card);
                 });
@@ -749,7 +804,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const titulo = document.getElementById("titulo-parque");
         if (!container || !titulo) return;
         if (!id) { titulo.textContent = "Parque não encontrado"; container.innerHTML = "<p>Não foi indicado nenhum parque.</p>"; return; }
-        fetch("http://127.0.0.1:5001/api/parques")
+        fetch(API + "/api/parques")
             .then(function(res) { return res.json(); })
             .then(function(data) {
                 const parque = data.find(p => p.id == id);
@@ -757,7 +812,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 titulo.textContent = parque.nome;
                 const tagsHTML = (parque.ideal_para || []).map(t => `<span class="tag">${t}</span>`).join("");
                 container.innerHTML = `
-                    <img src="${parque.imagem}" class="detalhe-img" alt="Imagem de ${parque.nome}">
+                    <img src="${PATH_PREFIX}${parque.imagem}" class="detalhe-img" alt="Imagem de ${parque.nome}">
                     <p>${parque.descricao}</p>
                     <div class="detalhe-grid">
                         <div><strong>Zona:</strong> ${parque.zona}</div>
@@ -792,7 +847,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const inputPesquisaMiradouro = document.getElementById("pesquisa-miradouro");
 
     function carregarMiradouros() {
-        fetch("http://127.0.0.1:5001/api/miradouros")
+        fetch(API + "/api/miradouros")
             .then(function(res) { return res.json(); })
             .then(function(data) {
                 const container = document.getElementById("lista-miradouros");
@@ -807,10 +862,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     const card = document.createElement("article");
                     card.classList.add("interesse-card");
                     card.style.cursor = "pointer";
-                    card.addEventListener("click", function() { window.location.href = "miradouro.html?id=" + miradouro.id; });
+                    card.addEventListener("click", function() { window.location.href = DETALHE + "miradouro.html?id=" + miradouro.id; });
                     const tagsHTML = (miradouro.tags || []).map(t => `<span class="tag">${t}</span>`).join("");
                     card.innerHTML = `
-                        <img src="${miradouro.imagem}" alt="Imagem de ${miradouro.nome}" class="card-img">
+                        <img src="${PATH_PREFIX}${miradouro.imagem}" alt="Imagem de ${miradouro.nome}" class="card-img">
                         <div class="acoes-card"><button class="btn-detalhes">Ver detalhes</button></div>
                         <h3>${miradouro.nome}</h3>
                         ${miradouro.acessivel ? '<span class="tag">Acessível</span>' : '<span class="tag tag-alerta">Acesso difícil</span>'}
@@ -821,7 +876,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     `;
                     card.querySelector(".btn-detalhes").addEventListener("click", function(e) {
                         e.stopPropagation();
-                        window.location.href = "miradouro.html?id=" + miradouro.id;
+                        window.location.href = DETALHE + "miradouro.html?id=" + miradouro.id;
                     });
                     container.appendChild(card);
                 });
@@ -868,7 +923,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const titulo = document.getElementById("titulo-miradouro");
         if (!container || !titulo) return;
         if (!id) { titulo.textContent = "Miradouro não encontrado"; container.innerHTML = "<p>Não foi indicado nenhum miradouro.</p>"; return; }
-        fetch("http://127.0.0.1:5001/api/miradouros")
+        fetch(API + "/api/miradouros")
             .then(function(res) { return res.json(); })
             .then(function(data) {
                 const miradouro = data.find(m => m.id == id);
@@ -877,7 +932,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const tagsHTML = (miradouro.tags || []).map(t => `<span class="tag">${t}</span>`).join("");
                 const idealHTML = (miradouro.ideal_para || []).map(t => `<span class="tag">${t}</span>`).join("");
                 container.innerHTML = `
-                    <img src="${miradouro.imagem}" class="detalhe-img" alt="Imagem de ${miradouro.nome}">
+                    <img src="${PATH_PREFIX}${miradouro.imagem}" class="detalhe-img" alt="Imagem de ${miradouro.nome}">
                     <p>${miradouro.descricao}</p>
                     <div class="detalhe-grid">
                         <div><strong>Zona:</strong> ${miradouro.zona}</div>
@@ -911,7 +966,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const inputPesquisaHistorico = document.getElementById("pesquisa-historico");
 
     function carregarHistoricos() {
-        fetch("http://127.0.0.1:5001/api/historicos")
+        fetch(API + "/api/historicos")
             .then(function(res) { return res.json(); })
             .then(function(data) {
                 const container = document.getElementById("lista-historicos");
@@ -926,10 +981,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     const card = document.createElement("article");
                     card.classList.add("interesse-card");
                     card.style.cursor = "pointer";
-                    card.addEventListener("click", function() { window.location.href = "historico.html?id=" + historico.id; });
+                    card.addEventListener("click", function() { window.location.href = DETALHE + "historico.html?id=" + historico.id; });
                     const tagsHTML = (historico.tags || []).map(t => `<span class="tag">${t}</span>`).join("");
                     card.innerHTML = `
-                        <img src="${historico.imagem}" alt="Imagem de ${historico.nome}" class="card-img">
+                        <img src="${PATH_PREFIX}${historico.imagem}" alt="Imagem de ${historico.nome}" class="card-img">
                         <div class="acoes-card"><button class="btn-detalhes">Ver detalhes</button></div>
                         <h3>${historico.nome}</h3>
                         ${historico.acessivel ? '<span class="tag">Acessível</span>' : '<span class="tag tag-alerta">Acesso difícil</span>'}
@@ -940,7 +995,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     `;
                     card.querySelector(".btn-detalhes").addEventListener("click", function(e) {
                         e.stopPropagation();
-                        window.location.href = "historico.html?id=" + historico.id;
+                        window.location.href = DETALHE + "historico.html?id=" + historico.id;
                     });
                     container.appendChild(card);
                 });
@@ -987,7 +1042,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const titulo = document.getElementById("titulo-historico");
         if (!container || !titulo) return;
         if (!id) { titulo.textContent = "Local não encontrado"; container.innerHTML = "<p>Não foi indicado nenhum local.</p>"; return; }
-        fetch("http://127.0.0.1:5001/api/historicos")
+        fetch(API + "/api/historicos")
             .then(function(res) { return res.json(); })
             .then(function(data) {
                 const historico = data.find(h => h.id == id);
@@ -996,7 +1051,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const tagsHTML = (historico.tags || []).map(t => `<span class="tag">${t}</span>`).join("");
                 const idealHTML = (historico.ideal_para || []).map(t => `<span class="tag">${t}</span>`).join("");
                 container.innerHTML = `
-                    <img src="${historico.imagem}" class="detalhe-img" alt="Imagem de ${historico.nome}">
+                    <img src="${PATH_PREFIX}${historico.imagem}" class="detalhe-img" alt="Imagem de ${historico.nome}">
                     <p>${historico.descricao}</p>
                     <div class="detalhe-grid">
                         <div><strong>Zona:</strong> ${historico.zona}</div>
@@ -1032,7 +1087,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const inputPesquisaComer = document.getElementById("pesquisa-comer");
 
     function carregarComer() {
-        fetch("http://127.0.0.1:5001/api/comer")
+        fetch(API + "/api/comer")
             .then(function(res) { return res.json(); })
             .then(function(data) {
                 const container = document.getElementById("lista-comer");
@@ -1048,10 +1103,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     const card = document.createElement("article");
                     card.classList.add("interesse-card");
                     card.style.cursor = "pointer";
-                    card.addEventListener("click", function() { window.location.href = "restaurante.html?id=" + item.id; });
+                    card.addEventListener("click", function() { window.location.href = DETALHE + "restaurante.html?id=" + item.id; });
                     const tagsHTML = (item.tags || []).map(t => `<span class="tag">${t}</span>`).join("");
                     card.innerHTML = `
-                        <img src="${item.imagem}" alt="Imagem de ${item.nome}" class="card-img">
+                        <img src="${PATH_PREFIX}${item.imagem}" alt="Imagem de ${item.nome}" class="card-img">
                         <div class="acoes-card"><button class="btn-detalhes">Ver detalhes</button></div>
                         <h3>${item.nome}</h3>
                         <p>${item.descricao}</p>
@@ -1060,7 +1115,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     `;
                     card.querySelector(".btn-detalhes").addEventListener("click", function(e) {
                         e.stopPropagation();
-                        window.location.href = "restaurante.html?id=" + item.id;
+                        window.location.href = DETALHE + "restaurante.html?id=" + item.id;
                     });
                     container.appendChild(card);
                 });
@@ -1138,7 +1193,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const titulo = document.getElementById("titulo-restaurante");
         if (!container || !titulo) return;
         if (!id) { titulo.textContent = "Espaço não encontrado"; container.innerHTML = "<p>Não foi indicado nenhum espaço.</p>"; return; }
-        fetch("http://127.0.0.1:5001/api/comer")
+        fetch(API + "/api/comer")
             .then(function(res) { return res.json(); })
             .then(function(data) {
                 const item = data.find(c => c.id == id);
@@ -1147,7 +1202,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const tagsHTML = (item.tags || []).map(t => `<span class="tag">${t}</span>`).join("");
                 const locaisHTML = (item.locais || []).map(l => `<li>${l}</li>`).join("");
                 container.innerHTML = `
-                    <img src="${item.imagem}" class="detalhe-img" alt="Imagem de ${item.nome}">
+                    <img src="${PATH_PREFIX}${item.imagem}" class="detalhe-img" alt="Imagem de ${item.nome}">
                     <p>${item.descricao}</p>
                     <div class="detalhe-grid">
                         <div><strong>Zona:</strong> ${item.zona}</div>
@@ -1180,7 +1235,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const inputPesquisaCultura = document.getElementById("pesquisa-cultura");
 
     function carregarCultura() {
-        fetch("http://127.0.0.1:5001/api/cultura")
+        fetch(API + "/api/cultura")
             .then(function(res) { return res.json(); })
             .then(function(data) {
                 const container = document.getElementById("lista-cultura");
@@ -1196,10 +1251,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     const card = document.createElement("article");
                     card.classList.add("interesse-card");
                     card.style.cursor = "pointer";
-                    card.addEventListener("click", function() { window.location.href = "espaco-cultural.html?id=" + item.id; });
+                    card.addEventListener("click", function() { window.location.href = DETALHE + "espaco-cultural.html?id=" + item.id; });
                     const tagsHTML = (item.tags || []).map(t => `<span class="tag">${t}</span>`).join("");
                     card.innerHTML = `
-                        <img src="${item.imagem}" alt="Imagem de ${item.nome}" class="card-img">
+                        <img src="${PATH_PREFIX}${item.imagem}" alt="Imagem de ${item.nome}" class="card-img">
                         <div class="acoes-card"><button class="btn-detalhes">Ver detalhes</button></div>
                         <h3>${item.nome}</h3>
                         <p>${item.descricao}</p>
@@ -1208,7 +1263,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     `;
                     card.querySelector(".btn-detalhes").addEventListener("click", function(e) {
                         e.stopPropagation();
-                        window.location.href = "espaco-cultural.html?id=" + item.id;
+                        window.location.href = DETALHE + "espaco-cultural.html?id=" + item.id;
                     });
                     container.appendChild(card);
                 });
@@ -1286,7 +1341,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const titulo = document.getElementById("titulo-cultura");
         if (!container || !titulo) return;
         if (!id) { titulo.textContent = "Espaço não encontrado"; container.innerHTML = "<p>Não foi indicado nenhum espaço.</p>"; return; }
-        fetch("http://127.0.0.1:5001/api/cultura")
+        fetch(API + "/api/cultura")
             .then(function(res) { return res.json(); })
             .then(function(data) {
                 const item = data.find(c => c.id == id);
@@ -1295,7 +1350,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const tagsHTML = (item.tags || []).map(t => `<span class="tag">${t}</span>`).join("");
                 const locaisHTML = (item.locais || []).map(l => `<li>${l}</li>`).join("");
                 container.innerHTML = `
-                    <img src="${item.imagem}" class="detalhe-img" alt="Imagem de ${item.nome}">
+                    <img src="${PATH_PREFIX}${item.imagem}" class="detalhe-img" alt="Imagem de ${item.nome}">
                     <p>${item.descricao}</p>
                     <div class="detalhe-grid">
                         <div><strong>Zona:</strong> ${item.zona}</div>
@@ -1329,7 +1384,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        fetch("http://127.0.0.1:5001/api/praias")
+        fetch(API + "/api/praias")
             .then(function (res) {
                 return res.json();
             })
@@ -1353,7 +1408,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     .join("");
 
                 container.innerHTML = `
-                <img src="${praia.imagem}" class="detalhe-img" alt="Imagem de ${praia.nome}">
+                <img src="${PATH_PREFIX}${praia.imagem}" class="detalhe-img" alt="Imagem de ${praia.nome}">
 
                 <p>${praia.descricao}</p>
 
@@ -1388,7 +1443,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (btnVoltar) {
         btnVoltar.addEventListener("click", function () {
-            window.location.href = "praias.html";
+            window.location.href = LISTA + "praias.html";
         });
     }
 
@@ -1440,7 +1495,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     aiResultado.classList.remove("visivel");
                     aiResultado.innerHTML = "";
 
-                    fetch("http://127.0.0.1:5001/api/ai/guia", {
+                    fetch(API + "/api/ai/guia", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ destino: nome, tipo: tipo })

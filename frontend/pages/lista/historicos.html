@@ -4,18 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cultura - Almada</title>
+    <title>Locais Históricos - Almada</title>
 
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="pagina-secundaria">
 
 <header>
-    <h1>Cultura em Almada</h1>
-    <p>Descubra espaços culturais, teatros, museus, festivais e património do concelho.</p>
+    <h1>Locais Históricos de Almada</h1>
+    <p>Descubra espaços com valor histórico, religioso e cultural ligados à identidade de Almada.</p>
 
-    <a href="index.html" class="voltar-home" style="color:white; text-decoration:none;">
+    <a href="../../index.html" class="voltar-home" style="color:white; text-decoration:none;">
         ← Voltar à página principal
     </a>
 </header>
@@ -26,34 +26,30 @@
         <h2>Filtros</h2>
 
         <div class="filtros-praias">
-            <button id="filtro-cultura-arte" type="button">
-                Arte
+            <button id="filtro-historico-acessivel" type="button">
+                Só acessíveis
             </button>
 
-            <button id="filtro-cultura-teatro" type="button">
-                Teatro e eventos
+            <button id="filtro-historico-transportes" type="button">
+                Com transportes
             </button>
 
-            <button id="filtro-cultura-patrimonio" type="button">
-                Património e museus
-            </button>
-
-            <button id="limpar-filtros-cultura" type="button">
+            <button id="limpar-filtros-historicos" type="button">
                 Limpar filtros
             </button>
         </div>
 
         <input
                 type="text"
-                id="pesquisa-cultura"
-                placeholder="Pesquisar espaço cultural..."
+                id="pesquisa-historico"
+                placeholder="Pesquisar local histórico..."
         >
     </section>
 
     <section>
-        <h2>Espaços culturais e eventos</h2>
+        <h2>Lista de locais históricos</h2>
 
-        <div class="interesses-grid" id="lista-cultura">
+        <div class="interesses-grid" id="lista-historicos">
         </div>
     </section>
 
@@ -79,7 +75,7 @@
     </div>
 </div>
 
-<script src="script.js"></script>
+<script src="../../script.js"></script>
 
 </body>
 </html>

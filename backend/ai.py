@@ -41,3 +41,30 @@ def gerar_guia(destino, tipo="destino"):
     )
 
     return response.text
+
+
+def classificar_contacto(tipo_pedido, mensagem):
+    """
+    Usa IA para classificar o pedido de contacto e gerar uma resposta automática.
+    """
+    prompt = (
+        "És um assistente virtual do site turístico de Almada, Portugal.\n"
+        "O utilizador enviou um pedido de contacto.\n\n"
+        f"Tipo de pedido selecionado: {tipo_pedido}\n"
+        f"Mensagem do utilizador: {mensagem}\n\n"
+        "Faz o seguinte:\n"
+        "1. Classifica a urgência do pedido (baixa, média, alta)\n"
+        "2. Identifica o tema principal (ex: restauração, praias, transportes, cultura, acessibilidade, outro)\n"
+        "3. Gera uma resposta automática personalizada e útil para o utilizador, "
+        "com sugestões concretas relacionadas com Almada.\n\n"
+        "Responde em JSON com os campos: urgencia, tema, resposta.\n"
+        "A resposta deve ser em português de Portugal, amigável e concisa (máx. 150 palavras)."
+    )
+
+    client = _get_client()
+    response = client.models.generate_content(
+        model="gemini-2.0-flash",
+        contents=prompt,
+    )
+
+    return response.text

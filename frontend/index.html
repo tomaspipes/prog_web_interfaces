@@ -8,15 +8,14 @@
   <title>Almada</title>
 
   <!-- Ligação ao ficheiro CSS externo -->
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=3">
 </head>
 
 <body id="topo">
 
 <!-- Cabeçalho fixo da página -->
 <header>
-  <div class="logo">AL</div>
-
+  <a href="#apresentacao"><img class="logo" src="imagens/geral/almada_logo.png" alt="Almada Logo"></a>
   <div class="header-content">
     <h1>Almada</h1>
     <p>Descubra Almada — entre o Tejo, o Atlântico, a história e a cultura.</p>
@@ -42,6 +41,7 @@
       <li><a href="#galeria">Galeria</a></li>
       <li><a href="#links">Ligações externas</a></li>
       <li><a href="#contacto">Contactos</a></li>
+      <li class="nav-destaque"><a href="pontos.html">Todos os Pontos (SPA)</a></li>
     </ul>
   </nav>
 
@@ -186,27 +186,27 @@
 
       <div class="interesses-grid">
 
-        <a class="interesse-card card-link" href="praias.html">
+        <a class="interesse-card card-link" href="pages/lista/praias.html">
           <h3>Praias</h3>
           <span class="tag">Atlântico</span>
           <span class="tag">Lazer</span>
           <p>Explore a Costa da Caparica, Fonte da Telha, Cova do Vapor e outras praias do concelho.</p>
         </a>
 
-        <a class="interesse-card card-link" href="parques.html">
+        <a class="interesse-card card-link" href="pages/lista/parques.html">
           <h3>Parques e jardins</h3>
           <span class="tag">Acessível</span>
           <span class="tag">Descanso</span>
           <p>Conheça espaços verdes e zonas adequadas para passeios calmos, como o Parque da Paz.</p>
         </a>
 
-        <a class="interesse-card card-link" href="miradouros.html">
+        <a class="interesse-card card-link" href="pages/lista/miradouros.html">
           <h3>Miradouros</h3>
           <span class="tag">Vista sobre Lisboa</span>
           <p>Descubra locais com vistas privilegiadas para o Tejo, Lisboa e a frente ribeirinha.</p>
         </a>
 
-        <a class="interesse-card card-link" href="historicos.html">
+        <a class="interesse-card card-link" href="pages/lista/historicos.html">
           <h3>Locais históricos</h3>
           <span class="tag">Património</span>
           <p>Visite espaços históricos e culturais ligados à identidade de Almada.</p>
@@ -224,19 +224,19 @@
 
       <div class="interesses-grid">
 
-        <a class="interesse-card card-link" href="comer.html?filtro=peixe">
+        <a class="interesse-card card-link" href="pages/lista/comer.html?filtro=peixe">
           <h3>Restaurantes de peixe</h3>
           <span class="tag">Peixe fresco</span>
           <p>Explore zonas conhecidas pela restauração, com destaque para Cacilhas e frente ribeirinha.</p>
         </a>
 
-        <a class="interesse-card card-link" href="comer.html?filtro=tradicional">
+        <a class="interesse-card card-link" href="pages/lista/comer.html?filtro=tradicional">
           <h3>Restaurantes tradicionais</h3>
           <span class="tag">Comida portuguesa</span>
           <p>Conheça espaços de cozinha portuguesa e locais adequados para refeições em família.</p>
         </a>
 
-        <a class="interesse-card card-link" href="comer.html?filtro=bar">
+        <a class="interesse-card card-link" href="pages/lista/comer.html?filtro=bar">
           <h3>Cafés, esplanadas e bares</h3>
           <span class="tag">Convívio</span>
           <p>Descubra esplanadas, cafés e bares junto ao rio, à praia e a zonas históricas.</p>
@@ -254,19 +254,19 @@
 
       <div class="interesses-grid">
 
-        <a class="interesse-card card-link" href="cultura.html?filtro=arte">
-          <h3>Casa da Cerca</h3>
+        <a class="interesse-card card-link" href="pages/lista/cultura.html?filtro=arte">
+          <h3>Arte</h3>
           <span class="tag">Arte contemporânea</span>
           <p>Centro de Arte Contemporânea instalado num edifício histórico com vista sobre Lisboa.</p>
         </a>
 
-        <a class="interesse-card card-link" href="cultura.html?filtro=teatro">
+        <a class="interesse-card card-link" href="pages/lista/cultura.html?filtro=teatro">
           <h3>Teatro e eventos</h3>
           <span class="tag">Cultura local</span>
           <p>Consulte espaços culturais, programação teatral e eventos realizados em Almada.</p>
         </a>
 
-        <a class="interesse-card card-link" href="cultura.html?filtro=patrimonio">
+        <a class="interesse-card card-link" href="pages/lista/cultura.html?filtro=patrimonio">
           <h3>Património e museus</h3>
           <span class="tag">História</span>
           <p>Conheça espaços ligados à memória, à história local e à identidade do concelho.</p>
@@ -314,7 +314,7 @@
         </figure>
 
         <figure>
-          <img src="imagens/geral/cacilhas.jpg" alt="Zona de Cacilhas em Almada">
+          <img src="imagens/comer/peixe/cacilhas-restaurantes.jpg" alt="Zona de Cacilhas em Almada">
           <figcaption>Cacilhas e frente ribeirinha</figcaption>
         </figure>
 
@@ -407,6 +407,13 @@
         </p>
 
         <p id="mensagem-sucesso" class="sucesso"></p>
+
+        <!-- Resposta automática gerada por IA -->
+        <div id="ai-contacto-section" class="ai-section" style="display:none;">
+          <h3>Resposta Automática</h3>
+          <div id="ai-contacto-loading" style="display:none;"></div>
+          <div id="ai-contacto-resultado"></div>
+        </div>
       </form>
     </section>
 

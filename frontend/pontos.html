@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pontos de Interesse — Almada</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="pagina-secundaria pagina-spa">
+
+<header>
+  <a href="index.html" class="voltar-home">← Voltar</a>
+  <div class="header-content">
+    <h1>Pontos de Interesse</h1>
+    <p>Explore todos os locais de Almada numa única página</p>
+  </div>
+</header>
+
+<main class="spa-container">
+
+  <!-- Filtros por categoria -->
+  <section class="spa-filtros">
+    <h2>Filtrar por categoria</h2>
+    <div class="filtros-grupo">
+      <button class="tag ativo" data-filtro="todos">Todos</button>
+      <button class="tag" data-filtro="praias">Praias</button>
+      <button class="tag" data-filtro="parques">Parques</button>
+      <button class="tag" data-filtro="miradouros">Miradouros</button>
+      <button class="tag" data-filtro="historicos">Locais Históricos</button>
+      <button class="tag" data-filtro="comer">Comer</button>
+      <button class="tag" data-filtro="cultura">Cultura</button>
+    </div>
+
+    <!-- Pesquisa -->
+    <div class="spa-pesquisa">
+      <label for="pesquisa-pontos">Pesquisar:</label>
+      <input type="text" id="pesquisa-pontos" placeholder="Ex: Costa da Caparica, restaurante...">
+    </div>
+
+    <p class="spa-contagem">A carregar pontos de interesse...</p>
+  </section>
+
+  <!-- Lista de resultados -->
+  <section class="spa-resultados">
+    <div id="spa-grid" class="card-grid"></div>
+  </section>
+
+</main>
+
+<!-- Painel de detalhe (SPA — abre dentro da mesma página) -->
+<div id="spa-overlay" class="spa-overlay" role="dialog" aria-modal="true" aria-labelledby="spa-detalhe-titulo" hidden>
+  <div class="spa-detalhe-painel">
+    <button id="spa-fechar" class="spa-fechar" aria-label="Fechar detalhe">&#x2715;</button>
+    <img id="spa-detalhe-img" src="" alt="" class="spa-detalhe-img">
+    <div class="spa-detalhe-corpo">
+      <span id="spa-detalhe-categoria" class="card-categoria"></span>
+      <h2 id="spa-detalhe-titulo"></h2>
+      <p id="spa-detalhe-localizacao" class="spa-detalhe-local"></p>
+      <p id="spa-detalhe-descricao"></p>
+      <div id="spa-detalhe-tags" class="card-tags"></div>
+      <div id="spa-detalhe-proximidades" class="spa-proximidades"></div>
+    </div>
+  </div>
+</div>
+
+<a href="#" class="back-to-top">↑</a>
+
+<script src="script-pontos.js"></script>
+
+</body>
+</html>

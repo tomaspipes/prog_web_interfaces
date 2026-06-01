@@ -4,57 +4,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Miradouros - Almada</title>
+    <title>Praias - Almada</title>
 
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="pagina-secundaria">
 
 <header>
-    <h1>Miradouros de Almada</h1>
-    <p>Descubra locais com vistas privilegiadas sobre o Tejo, Lisboa e a frente ribeirinha.</p>
+    <h1>Praias de Almada</h1>
+    <p>Descubra as melhores praias, acessos e condições.</p>
 
-    <a href="index.html" class="voltar-home" style="color:white; text-decoration:none;">
+    <a href="../../index.html" class="voltar-home" style="color:white; text-decoration:none;">
         ← Voltar à página principal
     </a>
 </header>
 
 <main>
 
+    <!-- Secção de filtros -->
     <section>
         <h2>Filtros</h2>
 
         <div class="filtros-praias">
-            <button id="filtro-miradouro-acessivel" type="button">
+            <button id="filtro-acessivel" type="button">
                 Só acessíveis
             </button>
 
-            <button id="filtro-miradouro-transportes" type="button">
-                Com transportes
+            <button id="filtro-estacionamento" type="button">
+                Com estacionamento
             </button>
 
-            <button id="limpar-filtros-miradouros" type="button">
+            <button id="filtro-restauracao" type="button">
+                Com restauração
+            </button>
+
+            <button id="filtro-transportes" type="button">
+                Com transportes
+            </button>
+            
+            <button id="limpar-filtros" type="button">
                 Limpar filtros
             </button>
         </div>
 
         <input
                 type="text"
-                id="pesquisa-miradouro"
-                placeholder="Pesquisar miradouro..."
+                id="pesquisa-praia"
+                placeholder="Pesquisar praia..."
         >
+
     </section>
 
+    <!-- Secção da lista dinâmica de praias -->
     <section>
-        <h2>Lista de miradouros</h2>
+        <h2>Lista de praias</h2>
 
-        <div class="interesses-grid" id="lista-miradouros">
+        <div class="interesses-grid" id="lista-praias">
+            <!-- Os cards das praias vão ser preenchidos via JavaScript -->
         </div>
     </section>
 
 </main>
 
+<!-- Widget de áudio ambiente -->
 <div class="audio-widget fechado" id="audio-widget">
     <button id="toggle-widget" class="audio-tab" type="button" aria-expanded="false" aria-controls="audio-panel">
         🎵
@@ -75,7 +88,7 @@
     </div>
 </div>
 
-<script src="script.js"></script>
+<script src="../../script.js"></script>
 
 </body>
 </html>
