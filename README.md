@@ -170,6 +170,99 @@ Aguarda feedback. Podes continuar a fazer commits na mesma branch — o PR atual
 
 ---
 
+## 🚀 Como correr a aplicação web (Almada)
+
+### Pré-requisitos
+
+- **Python 3.9+** instalado
+- Um browser moderno (Chrome, Firefox, Safari)
+
+### 1. Criar o ambiente virtual (só uma vez)
+
+```bash
+python3 -m venv venv
+```
+
+### 2. Ativar o ambiente virtual
+
+```bash
+# macOS / Linux:
+source venv/bin/activate
+
+# Windows:
+venv\Scripts\activate
+```
+
+### 3. Instalar as dependências
+
+```bash
+pip install -r backend/requirements.txt
+```
+
+### 4. Configurar a chave da API (Gemini AI)
+
+Cria o ficheiro `backend/.env` com a tua chave:
+
+```bash
+echo 'GEMINI_API_KEY=a_tua_chave_aqui' > backend/.env
+```
+
+> Podes obter uma chave gratuita em [ai.google.dev](https://ai.google.dev). Sem chave, a app funciona normalmente — apenas o botão de IA ficará indisponível.
+
+### 5. Inicializar a base de dados (só uma vez, ou para repor dados)
+
+```bash
+python backend/init_db.py
+```
+
+Isto cria o ficheiro `backend/almada.db` com todos os dados pré-carregados.
+
+### 6. Arrancar o servidor Flask
+
+```bash
+python backend/app.py
+```
+
+O servidor arranca em `http://127.0.0.1:5001`.
+
+### 7. Abrir o frontend
+
+Abre o ficheiro `frontend/index.html` diretamente no browser, ou usa um servidor local:
+
+```bash
+# Opção simples com Python:
+cd frontend
+python3 -m http.server 8000
+```
+
+Depois abre [http://localhost:8000](http://localhost:8000) no browser.
+
+### Estrutura do projeto
+
+```
+├── backend/
+│   ├── app.py              # API Flask (porta 5001)
+│   ├── db.py               # Helper SQLite
+│   ├── ai.py               # Integração Gemini AI
+│   ├── init_db.py          # Script de criação da BD
+│   ├── almada.db           # Base de dados SQLite
+│   ├── requirements.txt    # Dependências Python
+│   └── .env                # Chave API (não versionar)
+├── frontend/
+│   ├── index.html          # Página principal
+│   ├── styles.css          # Estilos (design acessível)
+│   ├── script.js           # Lógica JS + filtros + IA
+│   ├── *.html              # Páginas de detalhe
+│   └── imagens/
+│       ├── passear/        # praias, parques, miradouros, historicos
+│       ├── comer/          # peixe, tradicionais, bares
+│       ├── cultura/        # arte, teatro, patrimonio
+│       └── geral/          # background, mapa
+└── README.md
+```
+
+---
+
 ## ❓ Problemas comuns
 
 **"Permission denied" ao fazer push**
